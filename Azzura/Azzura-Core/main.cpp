@@ -668,7 +668,7 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	sample = al_load_sample("footstep.wav");
+	sample = al_load_sample("../Dependencies/sound/footsteps-1.wav");
 
 	if (!sample)
 	{
