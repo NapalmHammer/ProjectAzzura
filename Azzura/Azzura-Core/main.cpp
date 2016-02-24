@@ -692,4 +692,5 @@ int main(int argc, char **argv)
 	al_destroy_sample(sample);
 
 	return 0;
+
 }

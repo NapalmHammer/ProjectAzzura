@@ -1,37 +1,37 @@
-system   I             system.c:245  al_install_system                [   0.00060] Allegro version: 5.1.12 (WIP)
-audio-dsound D           dsound.cpp:258  _dsound_open                     [   0.00101] Loading DirectSound module
-system   D            wsystem.c:674  maybe_parent_dir                 [   0.00119] Also searching C:\Users\res\GitHub\ProjectAzzura\Azzura\
-system   D            wsystem.c:724  _al_win_safe_load_library        [   0.00149] PathFindOnPath found: C:\WINDOWS\system32\dsound.dll
-system   D            wsystem.c:635  load_library_at_path             [   0.00155] Calling LoadLibrary C:\WINDOWS\system32\dsound.dll
-system   I            wsystem.c:638  load_library_at_path             [   0.06552] Loaded C:\WINDOWS\system32\dsound.dll
-audio-dsound I           dsound.cpp:275  _dsound_open                     [   0.06603] Starting DirectSound...
-audio-dsound D           dsound.cpp:285  _dsound_open                     [   0.21670] DirectSoundCreate8 succeeded
-audio    I              audio.c:347  do_install_audio                 [   0.21992] Using DirectSound driver
-audio-dsound D           dsound.cpp:320  _dsound_allocate_voice           [   0.22011] Allocating voice
-audio-dsound D           dsound.cpp:379  _dsound_allocate_voice           [   0.22016] Allocated voice
-dtor     D               dtor.c:184  _al_register_destructor          [   0.22020] added dtor for object 007A54C0, func 0F462563
-dtor     D               dtor.c:184  _al_register_destructor          [   0.22027] added dtor for object 007A62A8, func 0F462A31
-audio-dsound D           dsound.cpp:476  _dsound_start_voice              [   0.22034] Starting voice
-audio-dsound D           dsound.cpp:504  _dsound_start_voice              [   0.22038] CreateSoundBuffer
-audio-dsound D           dsound.cpp:513  _dsound_start_voice              [   0.22280] CreateSoundBuffer succeeded
-audio-dsound D           dsound.cpp:519  _dsound_start_voice              [   0.22363] Starting _dsound_update thread
-audio-dsound I           dsound.cpp:529  _dsound_start_voice              [   0.22575] Voice started
-dtor     D               dtor.c:184  _al_register_destructor          [   0.22586] added dtor for object 007A6CA8, func 0F464AC5
-audio    D          kcm_mixer.c:121  _al_rechannel_matrix             [   0.22620] sample matrix:
-audio    D          kcm_mixer.c:127  _al_rechannel_matrix             [   0.22625] 
-audio    D          kcm_mixer.c:127  _al_rechannel_matrix             [   0.22628] 
-dtor     D               dtor.c:214  _al_unregister_destructor        [   0.22734] removed dtor for object 007A6CA8
-dtor     D               dtor.c:214  _al_unregister_destructor        [   0.22743] removed dtor for object 007A62A8
-audio-dsound D           dsound.cpp:539  _dsound_stop_voice               [   0.22747] Stopping voice
-audio-dsound D           dsound.cpp:556  _dsound_stop_voice               [   0.22750] Joining thread
-audio-dsound D           dsound.cpp:562  _dsound_stop_voice               [   0.42327] Joined thread
-audio-dsound D           dsound.cpp:564  _dsound_stop_voice               [   0.42335] Destroying thread
-audio-dsound D           dsound.cpp:566  _dsound_stop_voice               [   0.42342] Thread destroyed
-audio-dsound D           dsound.cpp:573  _dsound_stop_voice               [   0.42346] Releasing buffer
-audio-dsound I           dsound.cpp:577  _dsound_stop_voice               [   0.42350] Voice stopped
-dtor     D               dtor.c:214  _al_unregister_destructor        [   0.42356] removed dtor for object 007A54C0
-audio-dsound D           dsound.cpp:389  _dsound_deallocate_voice         [   0.42361] Deallocating voice
-audio-dsound D           dsound.cpp:394  _dsound_deallocate_voice         [   0.42365] Deallocated voice
-audio-dsound D           dsound.cpp:303  _dsound_close                    [   0.42370] Releasing device
-audio-dsound D           dsound.cpp:305  _dsound_close                    [   0.43402] Released device
-audio-dsound I           dsound.cpp:308  _dsound_close                    [   0.43410] DirectSound closed
+system   I             system.c:245  al_install_system                [   0.00085] Allegro version: 5.1.12 (WIP)
+audio-dsound D           dsound.cpp:258  _dsound_open                     [   0.10468] Loading DirectSound module
+system   D            wsystem.c:674  maybe_parent_dir                 [   0.10488] Also searching C:\Users\res\GitHub\ProjectAzzura\Azzura\
+system   D            wsystem.c:724  _al_win_safe_load_library        [   0.10509] PathFindOnPath found: C:\WINDOWS\system32\dsound.dll
+system   D            wsystem.c:635  load_library_at_path             [   0.10512] Calling LoadLibrary C:\WINDOWS\system32\dsound.dll
+system   I            wsystem.c:638  load_library_at_path             [   0.19972] Loaded C:\WINDOWS\system32\dsound.dll
+audio-dsound I           dsound.cpp:275  _dsound_open                     [   0.20236] Starting DirectSound...
+audio-dsound D           dsound.cpp:285  _dsound_open                     [   0.24228] DirectSoundCreate8 succeeded
+audio    I              audio.c:347  do_install_audio                 [   0.24455] Using DirectSound driver
+audio-dsound D           dsound.cpp:320  _dsound_allocate_voice           [   0.29434] Allocating voice
+audio-dsound D           dsound.cpp:379  _dsound_allocate_voice           [   0.29441] Allocated voice
+dtor     D               dtor.c:184  _al_register_destructor          [   0.29864] added dtor for object 00DE65A0, func 609B2563
+dtor     D               dtor.c:184  _al_register_destructor          [   0.29873] added dtor for object 00DEE9C0, func 609B2A31
+audio-dsound D           dsound.cpp:476  _dsound_start_voice              [   0.29879] Starting voice
+audio-dsound D           dsound.cpp:504  _dsound_start_voice              [   0.29882] CreateSoundBuffer
+audio-dsound D           dsound.cpp:513  _dsound_start_voice              [   0.30135] CreateSoundBuffer succeeded
+audio-dsound D           dsound.cpp:519  _dsound_start_voice              [   0.33423] Starting _dsound_update thread
+audio-dsound I           dsound.cpp:529  _dsound_start_voice              [   0.33513] Voice started
+dtor     D               dtor.c:184  _al_register_destructor          [   0.33523] added dtor for object 00DEFD38, func 609B4AC5
+audio    D          kcm_mixer.c:121  _al_rechannel_matrix             [   0.42516] sample matrix:
+audio    D          kcm_mixer.c:127  _al_rechannel_matrix             [   0.42521] 
+audio    D          kcm_mixer.c:127  _al_rechannel_matrix             [   0.42524] 
+dtor     D               dtor.c:214  _al_unregister_destructor        [   0.42620] removed dtor for object 00DEFD38
+dtor     D               dtor.c:214  _al_unregister_destructor        [   0.49002] removed dtor for object 00DEE9C0
+audio-dsound D           dsound.cpp:539  _dsound_stop_voice               [   0.49009] Stopping voice
+audio-dsound D           dsound.cpp:556  _dsound_stop_voice               [   0.49012] Joining thread
+audio-dsound D           dsound.cpp:562  _dsound_stop_voice               [   0.64168] Joined thread
+audio-dsound D           dsound.cpp:564  _dsound_stop_voice               [   0.64174] Destroying thread
+audio-dsound D           dsound.cpp:566  _dsound_stop_voice               [   0.64179] Thread destroyed
+audio-dsound D           dsound.cpp:573  _dsound_stop_voice               [   0.64182] Releasing buffer
+audio-dsound I           dsound.cpp:577  _dsound_stop_voice               [   0.64186] Voice stopped
+dtor     D               dtor.c:214  _al_unregister_destructor        [   0.64193] removed dtor for object 00DE65A0
+audio-dsound D           dsound.cpp:389  _dsound_deallocate_voice         [   0.64197] Deallocating voice
+audio-dsound D           dsound.cpp:394  _dsound_deallocate_voice         [   0.64201] Deallocated voice
+audio-dsound D           dsound.cpp:303  _dsound_close                    [   0.64206] Releasing device
+audio-dsound D           dsound.cpp:305  _dsound_close                    [   0.64998] Released device
+audio-dsound I           dsound.cpp:308  _dsound_close                    [   0.65004] DirectSound closed
