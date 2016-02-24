@@ -375,7 +375,9 @@ int main(int argc, char **argv)
 	return 0;
 }*/
 
-#include <iostream>
+// Threading tutorial: Quite complicated
+
+/*#include <iostream>
 #include "allegro5\allegro5.h"
 
 class DATA
@@ -583,4 +585,111 @@ static void *Func_Thread(ALLEGRO_THREAD *thr, void *arg)
 	}
 
 	return NULL;
+}*/
+
+// Addon/Fonts tutorial
+
+/*#include <iostream>
+#include <allegro5\allegro.h>
+#include <allegro5\allegro_font.h>
+#include <allegro5\allegro_ttf.h>
+
+int main(int argc, char **argv)
+{
+	if (!al_init())
+	{
+		std::cerr << "Failed to initialize Allegro!" << std::endl;
+		return -1;
+	}
+
+	al_init_font_addon();
+	al_init_ttf_addon();
+
+	ALLEGRO_DISPLAY *display = al_create_display(640, 480);
+
+	if (!display)
+	{
+		std::cerr << "Failed to create display!" << std::endl;
+		return -1;
+	}
+
+	ALLEGRO_FONT *font = al_load_ttf_font("../dependencies/fonts/pirulen.ttf", 36, 0);
+
+	if (!font)
+	{
+		std::cerr << "Failed to load 'pirulen.ttf'." << std::endl;
+	system("PAUSE");
+		return -1;
+	}
+
+	al_clear_to_color(al_map_rgb(50, 10, 70));
+	al_draw_text(font, al_map_rgb(255, 255, 255), 640 / 2, (480 / 4), ALLEGRO_ALIGN_CENTRE, "My Text!");
+
+	al_flip_display();
+
+	al_rest(10.0);
+
+	al_destroy_display(display);
+
+	return 0;
+}*/
+
+// Addon/audio tutorial
+
+#include <iostream>
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
+
+int main(int argc, char **argv)
+{
+
+	ALLEGRO_DISPLAY *display = NULL;
+	ALLEGRO_SAMPLE *sample = NULL;
+
+	if (!al_init())
+	{
+		fprintf(stderr, "failed to initialize allegro!\n");
+		return -1;
+	}
+	if (!al_install_audio())
+	{
+		std::cerr << "Bad audio init" << std::endl;
+		return -1;
+	}
+	if (!al_init_acodec_addon())
+	{
+		std::cerr << "bad codec addon" << std::endl;
+		return -1;
+	}
+	if (!al_reserve_samples(1))
+	{
+		std::cerr << "bad sample reserve" << std::endl;
+		return -1;
+	}
+
+	sample = al_load_sample("footstep.wav");
+
+	if (!sample)
+	{
+		std::cerr << "sample clip bad" << std::endl;
+		return -1;
+	}
+
+	display = al_create_display(640, 480);
+
+	if (!display)
+	{
+		std::cerr << "Bad display" << std::endl;
+		return -1;
+	}
+
+	al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+
+	al_rest(10.0);
+
+	al_destroy_display(display);
+	al_destroy_sample(sample);
+
+	return 0;
 }
