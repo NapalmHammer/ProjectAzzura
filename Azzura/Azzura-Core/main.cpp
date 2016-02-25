@@ -636,7 +636,7 @@ int main(int argc, char **argv)
 
 // Addon/audio tutorial
 
-#include <iostream>
+/*#include <iostream>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
@@ -693,4 +693,225 @@ int main(int argc, char **argv)
 
 	return 0;
 
+}*/
+
+#include <iostream>
+#include "allegro5\allegro5.h"
+#include "allegro5\allegro_image.h"
+
+const float FPS = 60;
+const int SCREEN_W = 640;
+const int SCREEN_H = 480;
+const int BOUNCER_SIZE = 32;
+
+enum MYKEYS
+{
+	KEY_UP,
+	KEY_DOWN,
+	KEY_LEFT,
+	KEY_RIGHT
+};
+
+void updateCharacter(ALLEGRO_BITMAP *character, bool key[], int curFrame, int imageWidth, int imageHeight, float X, float Y);
+
+	int image_width = 20;
+	int image_height = 40;
+	int curFrame = 0;
+	int frameDelay = 6;
+	int frameCount = 0;
+
+int main(int argc, char** argv)
+{
+
+	ALLEGRO_DISPLAY *display = NULL;
+	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
+	ALLEGRO_TIMER *timer = NULL;
+	ALLEGRO_BITMAP *character;
+
+
+
+	float posX = SCREEN_W / 2.0 - image_width / 2.0;
+	float posY = SCREEN_H / 2.0 - image_height / 2.0;
+
+	bool key[4] = { false, false, false, false };
+	bool redraw = true;
+	bool doexit = false;
+
+	al_init();
+	al_install_keyboard();
+	al_init_image_addon();
+
+	timer = al_create_timer(1.0 / FPS);
+	display = al_create_display(SCREEN_W, SCREEN_H);
+	character = al_load_bitmap("../dependencies/bmp/28875.png");
+	event_queue = al_create_event_queue();
+
+	//al_convert_mask_to_alpha(image, al_map_rgb(255, 255, 255));
+	al_convert_mask_to_alpha(character, al_map_rgb(0, 128, 128));
+
+
+	al_register_event_source(event_queue, al_get_display_event_source(display));
+	al_register_event_source(event_queue, al_get_timer_event_source(timer));
+	al_register_event_source(event_queue, al_get_keyboard_event_source());
+
+	al_clear_to_color(al_map_rgb(0, 0, 0));
+	al_flip_display();
+	al_start_timer(timer);
+
+	int r = 255;
+	int g = 255;
+	int b = 255;
+	bool run = false;
+
+	while (!doexit)
+	{
+		ALLEGRO_EVENT ev;
+		al_wait_for_event(event_queue, &ev);
+
+		if (ev.type == ALLEGRO_EVENT_TIMER)
+		{
+			if (key[KEY_UP] && posY >= image_height)
+			{
+				posY -= 2.0;
+				run = true;
+			}
+			if (key[KEY_DOWN] && posY <= SCREEN_H - BOUNCER_SIZE - 4.0)
+			{
+				posY += 2.0;
+			}
+			if (key[KEY_LEFT] && posX >= 4.0)
+			{
+				posX -= 2.0;
+			}
+			if (key[KEY_RIGHT] && posX <= SCREEN_W - BOUNCER_SIZE - 4.0)
+			{
+				posX += 2.0;
+			}
+
+			redraw = true;
+		}
+		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+		{
+			break;
+		}
+		else if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
+		{
+			switch (ev.keyboard.keycode)
+			{
+			case ALLEGRO_KEY_UP:
+				key[KEY_UP] = true;
+				break;
+			case ALLEGRO_KEY_DOWN:
+				key[KEY_DOWN] = true;
+				break;
+			case ALLEGRO_KEY_LEFT:
+				key[KEY_LEFT] = true;
+				break;
+			case ALLEGRO_KEY_RIGHT:
+				key[KEY_RIGHT] = true;
+				break;
+			}
+		}
+		else if (ev.type == ALLEGRO_EVENT_KEY_UP)
+		{
+			switch (ev.keyboard.keycode)
+			{
+			case ALLEGRO_KEY_UP:
+				key[KEY_UP] = false;
+				curFrame = 0;
+				break;
+			case ALLEGRO_KEY_DOWN:
+				key[KEY_DOWN] = false;
+				curFrame = 0;
+				break;
+			case ALLEGRO_KEY_LEFT:
+				key[KEY_LEFT] = false;
+				curFrame = 0;
+				break;
+			case ALLEGRO_KEY_RIGHT:
+				key[KEY_RIGHT] = false;
+				curFrame = 0;
+				break;
+			case ALLEGRO_KEY_ESCAPE:
+				doexit = true;
+				break;
+			}
+		}
+
+		if (redraw && al_is_event_queue_empty(event_queue))
+		{
+				al_clear_to_color(al_map_rgb(r, g, b));
+
+				updateCharacter(character, key, curFrame, image_width, image_height, posX, posY);
+
+				if (key[KEY_DOWN])
+				{
+					
+				}
+
+
+			if (++frameCount >= frameDelay && key[KEY_DOWN])
+			{
+				curFrame++;
+				if (curFrame > 5)
+					curFrame = 0;
+
+				frameCount = 0;
+			}
+			redraw = false;
+			al_flip_display();
+		}
+	}
+
+	al_destroy_bitmap(character);
+	al_destroy_timer(timer);
+	al_destroy_display(display);
+	al_destroy_event_queue(event_queue);
+
+	return 0;
+}
+
+void updateCharacter(ALLEGRO_BITMAP *character, bool key[], int curFrame, int imageWidth, int imageHeight, float X, float Y)
+{
+	int curDirection = 0;
+	if (key[KEY_UP])
+	{
+		if (key[KEY_UP] && key[KEY_LEFT])
+		{
+
+		}
+		else if (key[KEY_UP] && key[KEY_RIGHT])
+		{
+
+		}
+	}
+
+	else if (key[KEY_DOWN])
+	{
+
+		al_draw_bitmap_region(character, curFrame * imageWidth + 72, 3 + 0, imageWidth, imageHeight, X, Y, 0);
+		if (key[KEY_DOWN] && key[KEY_LEFT])
+		{
+
+		}
+		else if (key[KEY_DOWN] && key[KEY_RIGHT])
+		{
+
+		}
+	}
+
+	else if (key[KEY_LEFT])
+	{
+
+	}
+
+	else if (key[KEY_RIGHT])
+	{
+
+	}
+
+	else 
+	{
+		al_draw_bitmap_region(character, curFrame * imageWidth + 5, 3 + 0, imageWidth, imageHeight, X, Y, 0);
+	}
 }
