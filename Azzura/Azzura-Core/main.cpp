@@ -698,6 +698,8 @@ int main(int argc, char **argv)
 #include <iostream>
 #include "allegro5\allegro5.h"
 #include "allegro5\allegro_image.h"
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 
 
 const float FPS = 60;
@@ -732,6 +734,7 @@ int main(int argc, char** argv)
 	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
 	ALLEGRO_TIMER *timer = NULL;
 	ALLEGRO_BITMAP *character;
+	ALLEGRO_SAMPLE *sample = NULL;
 
 
 
@@ -741,20 +744,23 @@ int main(int argc, char** argv)
 	bool key[4] = { false, false, false, false };
 	bool redraw = true;
 	bool doexit = false;
+	bool playingSound = false;
 
 	al_init();
 	al_install_keyboard();
 	al_init_image_addon();
-
+	al_install_audio();
+	al_init_acodec_addon();
+	al_reserve_samples(1);
+	
 	timer = al_create_timer(1.0 / FPS);
 	display = al_create_display(SCREEN_W, SCREEN_H);
-	character = al_load_bitmap("../dependencies/bmp/megaman-mod.png");
 	event_queue = al_create_event_queue();
+	sample = al_load_sample("../Dependencies/sound/internettheme.ogg");
 
-	//al_convert_mask_to_alpha(image, al_map_rgb(255, 255, 255));
+	character = al_load_bitmap("../dependencies/bmp/megaman-mod.png");
 	al_convert_mask_to_alpha(character, al_map_rgb(0, 128, 128));
-
-
+	
 	al_register_event_source(event_queue, al_get_display_event_source(display));
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
@@ -841,7 +847,11 @@ int main(int argc, char** argv)
 
 				updateCharacter(character, key, curFrame, image_width, image_height, posX, posY, curDirection);
 
-
+				if (!playingSound)
+				{
+					al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+					playingSound = true;
+				}
 
 			if (++frameCount >= frameDelay)
 			{
