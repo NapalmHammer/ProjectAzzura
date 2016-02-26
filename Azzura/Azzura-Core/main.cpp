@@ -774,11 +774,11 @@ int main(int argc, char** argv)
 
 		if (ev.type == ALLEGRO_EVENT_TIMER)
 		{
-			if (key[KEY_UP] && posY >= image_height)
+			if (key[KEY_UP] && posY >= 4.0)
 			{
 				posY -= 2.0;
 			}
-			if (key[KEY_DOWN] && posY <= SCREEN_H - BOUNCER_SIZE - 4.0)
+			if (key[KEY_DOWN] && posY <= SCREEN_H - image_height - 4.0)
 			{
 				posY += 2.0;
 			}
@@ -786,7 +786,7 @@ int main(int argc, char** argv)
 			{
 				posX -= 2.0;
 			}
-			if (key[KEY_RIGHT] && posX <= SCREEN_W - BOUNCER_SIZE - 4.0)
+			if (key[KEY_RIGHT] && posX <= SCREEN_W - image_width - 4.0)
 			{
 				posX += 2.0;
 			}
