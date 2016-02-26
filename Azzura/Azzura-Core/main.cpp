@@ -699,6 +699,7 @@ int main(int argc, char **argv)
 #include "allegro5\allegro5.h"
 #include "allegro5\allegro_image.h"
 
+
 const float FPS = 60;
 const int SCREEN_W = 640;
 const int SCREEN_H = 480;
@@ -712,13 +713,17 @@ enum MYKEYS
 	KEY_RIGHT
 };
 
-void updateCharacter(ALLEGRO_BITMAP *character, bool key[], int curFrame, int imageWidth, int imageHeight, float X, float Y);
+void updateCharacter(ALLEGRO_BITMAP *character, bool key[], int curFrame, int imageWidth, int imageHeight, float X, float Y, int &curDirection);
 
+	int r = 100;
+	int g = 100;
+	int b = 100;
 	int image_width = 20;
 	int image_height = 40;
 	int curFrame = 0;
 	int frameDelay = 6;
 	int frameCount = 0;
+	int curDirection = 1;
 
 int main(int argc, char** argv)
 {
@@ -743,7 +748,7 @@ int main(int argc, char** argv)
 
 	timer = al_create_timer(1.0 / FPS);
 	display = al_create_display(SCREEN_W, SCREEN_H);
-	character = al_load_bitmap("../dependencies/bmp/28875.png");
+	character = al_load_bitmap("../dependencies/bmp/megaman-mod.png");
 	event_queue = al_create_event_queue();
 
 	//al_convert_mask_to_alpha(image, al_map_rgb(255, 255, 255));
@@ -754,14 +759,7 @@ int main(int argc, char** argv)
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 	al_register_event_source(event_queue, al_get_keyboard_event_source());
 
-	al_clear_to_color(al_map_rgb(0, 0, 0));
-	al_flip_display();
 	al_start_timer(timer);
-
-	int r = 255;
-	int g = 255;
-	int b = 255;
-	bool run = false;
 
 	while (!doexit)
 	{
@@ -773,7 +771,6 @@ int main(int argc, char** argv)
 			if (key[KEY_UP] && posY >= image_height)
 			{
 				posY -= 2.0;
-				run = true;
 			}
 			if (key[KEY_DOWN] && posY <= SCREEN_H - BOUNCER_SIZE - 4.0)
 			{
@@ -842,15 +839,11 @@ int main(int argc, char** argv)
 		{
 				al_clear_to_color(al_map_rgb(r, g, b));
 
-				updateCharacter(character, key, curFrame, image_width, image_height, posX, posY);
-
-				if (key[KEY_DOWN])
-				{
-					
-				}
+				updateCharacter(character, key, curFrame, image_width, image_height, posX, posY, curDirection);
 
 
-			if (++frameCount >= frameDelay && key[KEY_DOWN])
+
+			if (++frameCount >= frameDelay)
 			{
 				curFrame++;
 				if (curFrame > 5)
@@ -871,47 +864,64 @@ int main(int argc, char** argv)
 	return 0;
 }
 
-void updateCharacter(ALLEGRO_BITMAP *character, bool key[], int curFrame, int imageWidth, int imageHeight, float X, float Y)
+void updateCharacter(ALLEGRO_BITMAP *character, bool key[], int curFrame, int imageWidth, int imageHeight, float X, float Y, int &curDirection)
 {
-	int curDirection = 0;
 	if (key[KEY_UP])
 	{
 		if (key[KEY_UP] && key[KEY_LEFT])
 		{
-
+			al_draw_bitmap_region(character, curFrame * 26 + 22, 259, 26, 42, X, Y, 0);
+			curDirection = 259;
+			return;
 		}
 		else if (key[KEY_UP] && key[KEY_RIGHT])
 		{
-
+			al_draw_bitmap_region(character, curFrame * 26 + 22, 302, 26, 42, X, Y, 0);
+			curDirection = 302;
+			return;
 		}
+		al_draw_bitmap_region(character, curFrame * 20 + 22, 44, 20, 42, X, Y, 0);
+		curDirection = 44;
+		return;
 	}
 
 	else if (key[KEY_DOWN])
 	{
 
-		al_draw_bitmap_region(character, curFrame * imageWidth + 72, 3 + 0, imageWidth, imageHeight, X, Y, 0);
 		if (key[KEY_DOWN] && key[KEY_LEFT])
 		{
-
+			al_draw_bitmap_region(character, curFrame * 27 + 22, 175, 27, 40, X, Y, 0);
+			curDirection = 173;
+			return;
 		}
 		else if (key[KEY_DOWN] && key[KEY_RIGHT])
 		{
-
+			al_draw_bitmap_region(character, curFrame * 27 + 22, 218, 27, 40, X, Y, 0);
+			curDirection = 216;
+			return;
 		}
+		al_draw_bitmap_region(character, curFrame * 21 + 22, 3, 21, 40, X, Y, 0);
+		curDirection = 1;
+		return;
 	}
 
 	else if (key[KEY_LEFT])
 	{
-
+		al_draw_bitmap_region(character, curFrame * 29 + 22, 88, 29, 41, X, Y, 0);
+		curDirection = 87;
+		return;
 	}
 
 	else if (key[KEY_RIGHT])
 	{
-
+		al_draw_bitmap_region(character, curFrame * 29 + 22, 131, 29, 41, X, Y, 0);
+		curDirection = 130;
+		return;
 	}
 
 	else 
 	{
-		al_draw_bitmap_region(character, curFrame * imageWidth + 5, 3 + 0, imageWidth, imageHeight, X, Y, 0);
+		al_draw_bitmap_region(character, 1, curDirection, 20, 42, X, Y, 0);
+		return;
 	}
 }
