@@ -695,7 +695,46 @@ int main(int argc, char **argv)
 
 }*/
 
-#include <iostream>
+// Basic GUI boxes
+
+#include "allegro5\allegro.h"
+#include <allegro5\allegro_native_dialog.h>
+
+short m_box(const char* message = "No Message given", const char* content_tittle = "Error", const char* title = "Error")
+{
+	switch (al_show_native_message_box(al_get_current_display(), title, content_tittle, message, NULL, ALLEGRO_MESSAGEBOX_ERROR))
+	{
+	case 0:
+		return 0;
+	case 1:
+		return 1;
+	case 2:
+		return 2;
+	}
+}
+
+int main(int argc, char **argv)
+{
+
+	if (al_init())
+	{
+		switch (m_box())
+		{
+		case 0:
+			break;
+		case 1:
+			break;
+		case 2:
+			break;
+		}
+		return 0;
+	}
+	return 0;
+}
+
+// Personal game/animation project
+
+/*#include <iostream>
 #include "allegro5\allegro5.h"
 #include "allegro5\allegro_image.h"
 #include <allegro5/allegro_audio.h>
@@ -849,7 +888,7 @@ int main(int argc, char** argv)
 
 				if (!playingSound)
 				{
-					al_play_sample(sample, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+					al_play_sample(sample, 0.5, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
 					playingSound = true;
 				}
 
@@ -934,4 +973,4 @@ void updateCharacter(ALLEGRO_BITMAP *character, bool key[], int curFrame, int im
 		al_draw_bitmap_region(character, 1, curDirection, 20, 42, X, Y, 0);
 		return;
 	}
-}
+}*/
