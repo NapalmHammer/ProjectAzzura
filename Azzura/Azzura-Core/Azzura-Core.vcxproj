@@ -121,17 +121,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="keyboard.cpp" />
+    <ClCompile Include="level.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="map.cpp" />
     <ClCompile Include="tile.cpp" />
     <ClCompile Include="sprite.cpp" />
+    <ClCompile Include="vec2.cpp" />
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
-    <ClInclude Include="map.h" />
+    <ClInclude Include="keyboard.h" />
+    <ClInclude Include="level.h" />
     <ClInclude Include="tile.h" />
     <ClInclude Include="sprite.h" />
+    <ClInclude Include="vec2.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

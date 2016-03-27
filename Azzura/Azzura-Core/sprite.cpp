@@ -3,14 +3,16 @@
 namespace azzure {
 
 
-	Sprite::Sprite(const char *filePath, int SCREEN_W, int SCREEN_H)
+	Sprite::Sprite(const char *filePath, int SCREEN_W, int SCREEN_H, Level &level)
 	{
 		m_FilePath = filePath;
 		m_Sprite = al_load_bitmap(m_FilePath);
 		frameWidth = 20;
-		frameHeight = 40;
-		m_x = SCREEN_W / 2 - frameWidth / 2;
-		m_y = SCREEN_H / 2 - frameHeight / 2;
+		frameHeight = 42;
+		m_x = (Level::tileW / 2) * 5;
+		m_y = Level::tileH * 5;
+		m_XY.m_X = m_x;
+		m_XY.m_Y = m_y;
 		maxFrame = 5;
 		frameCount = 0;
 		frameDelay = 6;
@@ -24,76 +26,196 @@ namespace azzure {
 	}
 
 
-	void Sprite::UpdateSprite(bool key[], int curFrame)
+	void Sprite::UpdateSprite(bool key[], int curFrame, Camera &camera, Keyboard &keyboard, float SCREEN_W, float SCREEN_H, Level &level)
 	{
-		if (key[KEY_UP])
+		int boundX = 0;
+		int boundY = 0;
+		if (keyboard.key_down(ALLEGRO_KEY_UP))
 		{
-			if (key[KEY_UP] && key[KEY_LEFT])
+			if (keyboard.key_down(ALLEGRO_KEY_UP) && keyboard.key_down(ALLEGRO_KEY_LEFT))
 			{
-				m_x -= 2;
-				m_y -= 2;
-				al_draw_bitmap_region(m_Sprite, curFrame * 26 + 22, 259, 26, 42, m_x, m_y, 0);
-				curDirection = 259;
+				//camera.modXY(+2.0f, +1.0f);
+				
+				boundX = floor(((m_XY.m_X - 2.0) * 2) / 100);
+				boundY = floor((m_XY.m_Y * 2) / 100);
+				if (level.m_CanWalk[boundY * 10 + boundX] != false)
+				{
+					m_XY.m_X -= 2.0;
+				}
+				boundX = floor((m_XY.m_X * 2) / 100);
+				boundY = floor(((m_XY.m_Y - 2.0) * 2) / 100);
+				if (level.m_CanWalk[boundY * 10 + boundX] != false)
+				{
+					m_XY.m_Y -= 2.0;
+				}
+				if (m_XY.m_X < 0)
+					m_XY.m_X = 0;
+				if (m_XY.m_Y < 0)
+					m_XY.m_Y = 0;
+				std::cout << " Mega X: " << m_XY.m_X << "Mega Y: " << m_XY.m_Y << std::endl;
+				Vec2 iso(Vec2::twoDToIso(m_XY));
+				al_draw_bitmap_region(m_Sprite, curFrame * 22 + 22, 42, 22, frameHeight,iso.m_X - 11 + SCREEN_W / 2,iso.m_Y - frameHeight + SCREEN_H / 10, 0);
+				curDirection = 42;
 				return;
 			}
-			else if (key[KEY_UP] && key[KEY_RIGHT])
+			else if (keyboard.key_down(ALLEGRO_KEY_UP) && keyboard.key_down(ALLEGRO_KEY_RIGHT))
 			{
-				m_x += 2;
-				m_y -= 2;
-				al_draw_bitmap_region(m_Sprite, curFrame * 26 + 22, 302, 26, 42, m_x, m_y, 0);
-				curDirection = 302;
+				//camera.modXY(-2.0f, +1.0f);
+
+				boundX = floor(((m_XY.m_X + 2.0) * 2) / 100);
+				boundY = floor((m_XY.m_Y * 2) / 100);
+				if (level.m_CanWalk[boundY * 10 + boundX] != false)
+				{
+					m_XY.m_X += 2.0;
+				}
+				boundX = floor((m_XY.m_X * 2) / 100);
+				boundY = floor(((m_XY.m_Y - 2.0) * 2) / 100);
+				if (level.m_CanWalk[boundY * 10 + boundX] != false)
+				{
+					m_XY.m_Y -= 2.0;
+				}
+				if (m_XY.m_X > 500)
+					m_XY.m_X = 500;
+				if (m_XY.m_Y < 0)
+					m_XY.m_Y = 0;
+				std::cout << " Mega X: " << m_XY.m_X << "Mega Y: " << m_XY.m_Y << std::endl;
+				Vec2 iso(Vec2::twoDToIso(m_XY));
+				al_draw_bitmap_region(m_Sprite, curFrame * 30 + 22, 126, 30, frameHeight, iso.m_X - 15 + SCREEN_W / 2,iso.m_Y - frameHeight + SCREEN_H / 10, 0);
+				curDirection = 126;
 				return;
 			}
-			m_y -= 2;
-			al_draw_bitmap_region(m_Sprite, curFrame * 20 + 22, 44, 20, 42, m_x, m_y, 0);
-			curDirection = 44;
+			//camera.modXY(0.0f, +2.0f);
+
+			boundX = floor((m_XY.m_X * 2) / 100);
+			boundY = floor(((m_XY.m_Y - 2.0) * 2) / 100);
+			if (level.m_CanWalk[boundY * 10 + boundX] != false)
+			{
+				m_XY.m_Y -= 2.0;
+			}
+			if (m_XY.m_Y < 0)
+				m_XY.m_Y = 0;
+			std::cout << " Mega X: " << m_XY.m_X << "Mega Y: " << m_XY.m_Y << std::endl;
+			Vec2 iso(Vec2::twoDToIso(m_XY));
+			al_draw_bitmap_region(m_Sprite, curFrame * 26 + 22, 294, 26, frameHeight,iso.m_X - 13 + SCREEN_W / 2,iso.m_Y - frameHeight + SCREEN_H / 10, 0);
+			curDirection = 294;
 			return;
 		}
 
-		else if (key[KEY_DOWN])
+		else if (keyboard.key_down(ALLEGRO_KEY_DOWN))
 		{
 
-			if (key[KEY_DOWN] && key[KEY_LEFT])
+			if (keyboard.key_down(ALLEGRO_KEY_DOWN) && keyboard.key_down(ALLEGRO_KEY_LEFT))
 			{
-				m_x -= 2;
-				m_y += 2;
-				al_draw_bitmap_region(m_Sprite, curFrame * 27 + 22, 175, 27, 40, m_x, m_y, 0);
-				curDirection = 173;
+				//camera.modXY(+2.0f, -1.0f);
+
+				boundX = floor(((m_XY.m_X - 2.0) * 2) / 100);
+				boundY = floor((m_XY.m_Y * 2) / 100);
+				if (level.m_CanWalk[boundY * 10 + boundX] != false)
+				{
+					m_XY.m_X -= 2.0;
+				}
+				boundX = floor((m_XY.m_X * 2) / 100);
+				boundY = floor(((m_XY.m_Y + 2.0) * 2) / 100);
+				if (level.m_CanWalk[boundY * 10 + boundX] != false)
+				{
+					m_XY.m_Y += 2.0;
+				}
+				if (m_XY.m_X < 0)
+					m_XY.m_X = 0;
+				if (m_XY.m_Y >= 500)
+					m_XY.m_Y = 498;
+				std::cout << " Mega X: " << m_XY.m_X << "Mega Y: " << m_XY.m_Y << std::endl;
+				Vec2 iso(Vec2::twoDToIso(m_XY));
+				std::cout << " Mega Iso X: " << iso.m_X << "Mega Iso Y: " << iso.m_Y << std::endl;
+				al_draw_bitmap_region(m_Sprite, curFrame * 30 + 22, 84, 30, frameHeight,iso.m_X - 15 + SCREEN_W / 2,/*(int)*/iso.m_Y - frameHeight + SCREEN_H / 10, 0);
+				curDirection = 84;
 				return;
 			}
-			else if (key[KEY_DOWN] && key[KEY_RIGHT])
+			else if (keyboard.key_down(ALLEGRO_KEY_DOWN) && keyboard.key_down(ALLEGRO_KEY_RIGHT))
 			{
-				m_x += 2;
-				m_y += 2;
-				al_draw_bitmap_region(m_Sprite, curFrame * 27 + 22, 218, 27, 40, m_x, m_y, 0);
-				curDirection = 216;
+				//camera.modXY(-2.0f, -1.0f);
+
+				boundX = floor(((m_XY.m_X + 2.0) * 2) / 100);
+				boundY = floor((m_XY.m_Y * 2) / 100);
+				if (level.m_CanWalk[boundY * 10 + boundX] != false)
+				{
+					m_XY.m_X += 2.0;
+				}
+				boundX = floor((m_XY.m_X * 2) / 100);
+				boundY = floor(((m_XY.m_Y + 2.0) * 2) / 100);
+				if (level.m_CanWalk[boundY * 10 + boundX] != false)
+				{
+					m_XY.m_Y += 2.0;
+				}
+				if (m_XY.m_X > 500)
+					m_XY.m_X = 500;
+				if (m_XY.m_Y >= 500)
+					m_XY.m_Y = 499;
+				std::cout << " Mega X: " << m_XY.m_X << "Mega Y: " << m_XY.m_Y << std::endl;
+				Vec2 iso(Vec2::twoDToIso(m_XY));
+				al_draw_bitmap_region(m_Sprite, curFrame * 22 + 22, 0, 22, frameHeight,iso.m_X - 11 + SCREEN_W / 2,iso.m_Y - frameHeight + SCREEN_H / 10, 0);
+				curDirection = 0;
 				return;
 			}
-			m_y += 2;
-			al_draw_bitmap_region(m_Sprite, curFrame * 21 + 22, 3, 21, 40, m_x, m_y, 0);
-			curDirection = 1;
+			//camera.modXY(0.0f, -2.0f);
+
+			boundX = floor((m_XY.m_X * 2) / 100);
+			boundY = floor(((m_XY.m_Y + 2.0) * 2) / 100);
+			if (level.m_CanWalk[boundY * 10 + boundX] != false)
+			{
+				m_XY.m_Y += 2.0;
+			}
+			if (m_XY.m_Y >= 500)
+				m_XY.m_Y = 499;
+			std::cout << " Mega X: " << m_XY.m_X << "Mega Y: " << m_XY.m_Y << std::endl;
+			Vec2 iso(Vec2::twoDToIso(m_XY));
+			al_draw_bitmap_region(m_Sprite, curFrame * 28 + 22, 168, 28, frameHeight,iso.m_X - 14 + SCREEN_W / 2,iso.m_Y - frameHeight + SCREEN_H / 10, 0);
+			curDirection = 168;
 			return;
 		}
 
-		else if (key[KEY_LEFT])
+		else if (keyboard.key_down(ALLEGRO_KEY_LEFT))
 		{
-			m_x -= 2;
-			al_draw_bitmap_region(m_Sprite, curFrame * 29 + 22, 88, 29, 41, m_x, m_y, 0);
-			curDirection = 87;
+			//camera.modXY(+2.0f, 0.0f);
+
+			boundX = floor(((m_XY.m_X - 2.0) * 2) / 100);
+			boundY = floor((m_XY.m_Y * 2) / 100);
+			if (level.m_CanWalk[boundY * 10 + boundX] != false)
+			{
+				m_XY.m_X -= 2.0;
+			}
+			if (m_XY.m_X < 0.0)
+				m_XY.m_X = 0.0;
+			std::cout << " Mega X: " << m_XY.m_X << "Mega Y: " << m_XY.m_Y << std::endl;
+			Vec2 iso(Vec2::twoDToIso(m_XY));
+			al_draw_bitmap_region(m_Sprite, curFrame * 26 + 22, 252, 26, frameHeight,iso.m_X - 13 + SCREEN_W / 2,iso.m_Y - frameHeight + SCREEN_H / 10, 0);
+			curDirection = 252;
 			return;
 		}
 
-		else if (key[KEY_RIGHT])
+		else if (keyboard.key_down(ALLEGRO_KEY_RIGHT))
 		{
-			m_x += 2;
-			al_draw_bitmap_region(m_Sprite, curFrame * 29 + 22, 131, 29, 41, m_x, m_y, 0);
-			curDirection = 130;
+			//camera.modXY(-2.0f, 0.0f);
+
+			boundX = floor(((m_XY.m_X + 2.0) * 2) / 100);
+			boundY = floor((m_XY.m_Y * 2) / 100);
+			if (level.m_CanWalk[boundY * 10 + boundX] != false)
+			{
+				m_XY.m_X += 2.0;
+			}
+			if (m_XY.m_X >= 500)
+				m_XY.m_X = 499;
+			std::cout << " Mega X: " << m_XY.m_X << "Mega Y: " << m_XY.m_Y << std::endl;
+			Vec2 iso(Vec2::twoDToIso(m_XY));
+			al_draw_bitmap_region(m_Sprite, curFrame * 28 + 22, 210, 28, frameHeight,iso.m_X - 14 + SCREEN_W / 2,iso.m_Y - frameHeight + SCREEN_H / 10, 0);
+			curDirection = 210;
 			return;
 		}
 
 		else
 		{
-			al_draw_bitmap_region(m_Sprite, 1, curDirection, 20, 42, m_x, m_y, 0);
+			Vec2 iso(Vec2::twoDToIso(m_XY));
+			al_draw_bitmap_region(m_Sprite, 0, curDirection, 20, frameHeight,iso.m_X - 10 + SCREEN_W / 2,iso.m_Y - frameHeight + SCREEN_H / 10, 0);
 			return;
 		}
 	}

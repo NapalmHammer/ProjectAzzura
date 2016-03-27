@@ -6,20 +6,20 @@
 #include "allegro5/allegro_audio.h"
 #include "allegro5/allegro_acodec.h"
 #include "allegro5/allegro_primitives.h"
-#include "allegro5\allegro_image.h"
-#include "tile.h"
-#include <time.h>
-#include <stdlib.h>
+#include "camera.h"
+#include "keyboard.h"
+#include "level.h"
 
 namespace azzure {
 
 	class Sprite
 	{
 	public:
-		Sprite(const char *filePath, int SCREEN_W, int SCREEN_H);
+		Sprite(const char *filePath, int SCREEN_W, int SCREEN_H, Level &level);
 		~Sprite();
 
 		ALLEGRO_BITMAP *m_Sprite;
+		Vec2 m_XY;
 		const char *m_FilePath;
 		float m_x;
 		float m_y;
@@ -32,16 +32,10 @@ namespace azzure {
 		int animationDirection;
 		int curDirection;
 
-		enum MYKEYS
-		{
-			KEY_UP,
-			KEY_DOWN,
-			KEY_LEFT,
-			KEY_RIGHT
-		};
 
-		void UpdateSprite(bool key[], int curFrame);
+		void UpdateSprite(bool key[], int curFrame, Camera &camera, Keyboard &keyboard, float SCREEN_W, float SCREEN_H, Level &level);
 
 	private:
 	};
+
 }
