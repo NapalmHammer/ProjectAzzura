@@ -1,9 +1,12 @@
 // Personal game/animation project
 
-#include "window.h"
+#include "Game/window.h"
 #include <time.h>
 #include <stdlib.h>
 #include <math.h>
+#include "Game/game.h"
+#include "Utils/mouse.h"
+#include "Graphics\map.h"
 
 int main(int argc, char** argv)
 {	
@@ -18,11 +21,23 @@ int main(int argc, char** argv)
 	int curFrame = 0;
 	int frameDelay = 6;
 	int frameCount = 0;
+	int mouseX = 0;
+	int mouseY = 0;
+	//int xoff = 0, yoff = 0;
 
-	bool key[4] = { false, false, false, false };
+
+	int gameState = 1;
+
 	bool redraw = true;
 	bool doexit = false;
-	bool playingSound = false;
+	bool left_down = false;
+
+	enum GameStates
+	{
+		MAIN_MENU,
+		PLAYING_GAME
+	};
+
 
 	//Allegro init
 	al_init();
@@ -34,21 +49,27 @@ int main(int argc, char** argv)
 	//Register event sources
 	window.registerEventSources();
 
-	//Creating Keyboard ogject
+	//loading the font to be used
+	ALLEGRO_FONT *font = NULL;
+	font = al_load_ttf_font("../Dependencies/fonts/slkscr.ttf", 48, 0);
+
+	//Creating Keyboard & Mouse objects
 	Keyboard keyboard;
+	Mouse mouse;
+
 	//Creating the camera
 	Vec2 camXY(0, 0);
 	Camera camera(camXY);
 
-	//Sound clip stuff to be sorted out
-	ALLEGRO_SAMPLE *sample = NULL;
-	al_reserve_samples(1);
-	sample = al_load_sample("../Dependencies/sound/internettheme.ogg");
+	//Creating tile sets and level
+	Tile tile("../Dependencies/bmp/testTile.bmp", 100, 50);
+	Tile tileTwo("../Dependencies/bmp/testTile2.bmp", 100, 55);
 
-	Level level;
+	Level level("../Dependencies/maps/homepage.txt");
 
 	//Main character place-holder sprite class
 	Sprite megaman("../dependencies/bmp/megaman-mod.png", 25, 25, level);
+	Sprite YMD("../Dependencies/bmp/YMDtest2.bmp", 32, 64, 10, 10, 2, level);
 
 
 	//Started the timer. Not good to put anything past here except in the primary game loop
@@ -71,8 +92,15 @@ int main(int argc, char** argv)
 		{
 			keyboard.poll(ev);
 			std::cout << ev.keyboard.keycode << std::endl;
-
-
+		}
+		else if (ev.type == ALLEGRO_EVENT_MOUSE_AXES)
+		{
+			mouseX = ev.mouse.x;
+			mouseY = ev.mouse.y;
+		}
+		else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN || ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
+		{
+			mouse.poll(ev);
 		}
 
 		if (redraw && al_is_event_queue_empty(window.m_EventQueue))
@@ -80,26 +108,40 @@ int main(int argc, char** argv)
 			al_clear_to_color(al_map_rgb(0, 0, 0));
 
 
-			
-			//Tile::drawGrid(camera.m_CamX, camera.m_CamY, 10, 10, 0.0f, SCREEN_W, SCREEN_H);
-			level.drawLevel(camera.m_CamX, camera.m_CamY, 0.0, SCREEN_W, SCREEN_H);
-			
-			megaman.UpdateSprite(key, curFrame, camera, keyboard, SCREEN_W, SCREEN_H, level);
-			
-
-			if (!playingSound)
+			if (gameState == MAIN_MENU)
 			{
-				al_play_sample(sample, 0.1, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
-				playingSound = true;
+				Game::mainMenu(font, mouseX, mouseY, SCREEN_W, SCREEN_H, mouse, gameState, left_down);
 			}
 
-			if (++frameCount >= frameDelay)
+			else if (gameState == PLAYING_GAME)
 			{
-				curFrame++;
-				if (curFrame >= 5)
-					curFrame = 0;
+				level.drawLevel(camera.m_CamX, camera.m_CamY, 3.0, SCREEN_W, SCREEN_H, tileTwo);
+				YMD.UpdateSprite(camera, keyboard, level, SCREEN_W, SCREEN_H);
+				megaman.UpdateSprite(curFrame, camera, keyboard, SCREEN_W, SCREEN_H, level);
 
-				frameCount = 0;
+				//if (keyboard.key_down(82))
+				//	xoff -= 1;
+				//	//camera.m_CamX -= 1;
+				//if (keyboard.key_down(83))
+				//	xoff += 1;
+				//	//camera.m_CamX += 1;
+				//if (keyboard.key_down(84))
+				//	yoff -= 1;
+				//	//camera.m_CamY -= 1;
+				//if (keyboard.key_down(85))
+				//	yoff += 1;
+				//	//camera.m_CamY += 1;
+
+				//std::cout << "Xoff : " << xoff << " Yoff : " << yoff << std::endl;
+
+				if (++frameCount >= frameDelay)
+				{
+					curFrame++;
+					if (curFrame >= 5)
+						curFrame = 0;
+
+					frameCount = 0;
+				}
 			}
 
 			redraw = false;

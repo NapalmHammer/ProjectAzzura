@@ -120,23 +120,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="camera.cpp" />
-    <ClCompile Include="keyboard.cpp" />
-    <ClCompile Include="level.cpp" />
+    <ClCompile Include="Game\camera.cpp" />
+    <ClCompile Include="Game\game.cpp" />
+    <ClCompile Include="Graphics\map.cpp" />
+    <ClCompile Include="Graphics\objects.cpp" />
+    <ClCompile Include="Utils\keyboard.cpp" />
+    <ClCompile Include="Graphics\level.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="tile.cpp" />
-    <ClCompile Include="sprite.cpp" />
-    <ClCompile Include="vec2.cpp" />
-    <ClCompile Include="window.cpp" />
+    <ClCompile Include="Utils\mouse.cpp" />
+    <ClCompile Include="Graphics\tile.cpp" />
+    <ClCompile Include="Graphics\sprite.cpp" />
+    <ClCompile Include="Utils\vec2.cpp" />
+    <ClCompile Include="Game\window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="camera.h" />
-    <ClInclude Include="keyboard.h" />
-    <ClInclude Include="level.h" />
-    <ClInclude Include="tile.h" />
-    <ClInclude Include="sprite.h" />
-    <ClInclude Include="vec2.h" />
-    <ClInclude Include="window.h" />
+    <ClInclude Include="Game\camera.h" />
+    <ClInclude Include="Game\game.h" />
+    <ClInclude Include="Graphics\map.h" />
+    <ClInclude Include="Graphics\objects.h" />
+    <ClInclude Include="Utils\keyboard.h" />
+    <ClInclude Include="Graphics\level.h" />
+    <ClInclude Include="Utils\mouse.h" />
+    <ClInclude Include="Graphics\tile.h" />
+    <ClInclude Include="Graphics\sprite.h" />
+    <ClInclude Include="Utils\vec2.h" />
+    <ClInclude Include="Game\window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
